@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abijah Israel L. Angeles (Jah) | Tactical CpE & Mecha Portfolio</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        zaku: {
+                            red: '#dc2626',
+                            crimson: '#9f1239',
+                            dark: '#111827',
+                            card: '#1f2937',
+                            pink: '#f43f5e',
+                            gold: '#fbbf24'
+                        }
+                    },
+                    fontFamily: {
+                        mono: ['JetBrains Mono', 'Fira Code', 'Courier New', 'monospace'],
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- FontAwesome & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-accent: #dc2626;
+            --secondary-accent: #f43f5e;
+            --highlight-accent: #fbbf24;
+            --bg-base: #0b0f19;
+            --card-bg: rgba(17, 24, 39, 0.85);
+            --border-color: rgba(220, 38, 38, 0.3);
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+        }
+
+        body[data-theme="zaku"] {
+            --primary-accent: #dc2626;
+            --secondary-accent: #f43f5e;
+            --highlight-accent: #fbbf24;
+            --border-color: rgba(220, 38, 38, 0.4);
+        }
+
+        body[data-theme="rx78"] {
+            --primary-accent: #2563eb;
+            --secondary-accent: #ef4444;
+            --highlight-accent: #f59e0b;
+            --border-color: rgba(37, 99, 235, 0.4);
+        }
+
+        body[data-theme="barbatos"] {
+            --primary-accent: #d97706;
+            --secondary-accent: #b91c1c;
+            --highlight-accent: #eab308;
+            --border-color: rgba(217, 119, 6, 0.4);
+        }
+
+        body[data-theme="unicorn"] {
+            --primary-accent: #ec4899;
+            --secondary-accent: #38bdf8;
+            --highlight-accent: #f43f5e;
+            --border-color: rgba(236, 72, 153, 0.4);
+        }
+
+        html:not(.dark) body {
+            --bg-base: #f1f5f9;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border-color: rgba(203, 213, 225, 0.9);
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .hud-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            position: relative;
+            backdrop-filter: blur(12px);
+        }
+
+        .hud-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            width: 10px;
+            height: 10px;
+            border-top: 2px solid var(--primary-accent);
+            border-left: 2px solid var(--primary-accent);
+        }
+
+        .hud-card::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 10px;
+            height: 10px;
+            border-bottom: 2px solid var(--secondary-accent);
+            border-right: 2px solid var(--secondary-accent);
+        }
+
+        .theme-accent-text { color: var(--primary-accent); }
+        .theme-accent-bg { background-color: var(--primary-accent); }
+        .theme-accent-border { border-color: var(--primary-accent); }
+
+        @keyframes dropIn {
+            0% { transform: translateY(-120%) rotate(-4deg); opacity: 0; }
+            70% { transform: translateY(10px) rotate(2deg); opacity: 1; }
+            85% { transform: translateY(-5px) rotate(-1deg); }
+            100% { transform: translateY(0) rotate(0deg); opacity: 1; }
+        }
+
+        .lanyard-drop {
+            animation: dropIn 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .id-card-perspective {
+            perspective: 1000px;
+        }
+
+        .id-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .id-card-inner.is-flipped {
+            transform: rotateY(180deg);
+        }
+
+        .id-card-front, .id-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .id-card-back {
+            transform: rotateY(180deg);
+        }
+
+        .gunpla-runner {
+            background: rgba(15, 23, 42, 0.65);
+            border: 2px solid #334155;
+            position: relative;
+        }
+
+        .scanline {
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0, 0, 0, 0.25) 50%,
+                rgba(0, 0, 0, 0.25)
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body data-theme="zaku" class="min-h-screen flex flex-col antialiased selection:bg-red-600 selection:text-white">
+
+    <div class="fixed inset-0 scanline z-50 opacity-30 pointer-events-none"></div>
+
+    <!-- Navigation -->
+    <header class="fixed top-0 left-0 right-0 z-40 bg-slate-950/90 backdrop-blur-md border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <a href="#hero" onclick="playSfx('lock')" class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-red-950/80 border-2 border-red-600 flex items-center justify-center font-mono font-extrabold text-red-500 shadow-lg shadow-red-900/30">
+                        ZEON
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-mono text-[10px] tracking-widest text-red-400 font-bold uppercase">PILOT MS-06S</span>
+                            <span class="px-1.5 py-0.2 text-[9px] font-mono font-bold bg-amber-950 text-amber-400 border border-amber-800">IES PRES</span>
+                        </div>
+                        <span class="font-mono font-black text-sm tracking-tight text-white block">A.I.L.A. // JAH</span>
+                    </div>
+                </a>
+
+                <nav class="hidden lg:flex items-center gap-1 font-mono text-xs">
+                    <a href="#hero" onclick="playSfx('click')" class="px-3 py-2 text-slate-300 hover:text-white hover:bg-slate-800/80 rounded transition-all">
+                        <span class="text-red-500 font-bold">01.</span> COMMAND
+                    </a>
+                    <a href="#specs" onclick="playSfx('click')" class="px-3 py-2 text-slate-300 hover:text-white hover:bg-slate-800/80 rounded transition-all">
+                        <span class="text-red-500 font-bold">02.</span> SPECS
+                    </a>
+                    <a href="#hangar" onclick="playSfx('click')" class="px-3 py-2 text-slate-300 hover:text-white hover:bg-slate-800/80 rounded transition-all">
+                        <span class="text-red-500 font-bold">03.</span> UNITS
+                    </a>
+                    <a href="#creative" onclick="playSfx('click')" class="px-3 py-2 text-slate-300 hover:text-white hover:bg-slate-800/80 rounded transition-all">
+                        <span class="text-red-500 font-bold">04.</span> CAD & MEDIA
+                    </a>
+                    <a href="#ideas" onclick="playSfx('click')" class="px-3 py-2 text-slate-300 hover:text-white hover:bg-slate-800/80 rounded transition-all">
+                        <span class="text-red-500 font-bold">05.</span> LOGS
+                    </a>
+                    <a href="#contact" onclick="playSfx('click')" class="px-3 py-2 text-slate-300 hover:text-white hover:bg-slate-800/80 rounded transition-all">
+                        <span class="text-red-500 font-bold">06.</span> COMMS & SOCIALS
+                    </a>
+                </nav>
+
+                <div class="flex items-center gap-2 font-mono text-xs">
+                    <button id="sfx-btn" onclick="toggleSfx()" title="Toggle Web Audio SFX" class="px-3 py-1.5 rounded bg-slate-900 border border-slate-700 hover:border-red-500 text-slate-300 flex items-center gap-2 transition-all">
+                        <i id="sfx-icon" class="fa-solid fa-volume-high text-emerald-400"></i>
+                        <span id="sfx-label" class="hidden sm:inline">SFX: ON</span>
+                    </button>
+
+                    <button onclick="toggleDarkMode(); playSfx('click')" title="Toggle Dark/Light HUD" class="p-2 rounded bg-slate-900 border border-slate-700 text-amber-400 hover:border-amber-400">
+                        <i id="mode-icon" class="fa-solid fa-moon"></i>
+                    </button>
+
+                    <div class="relative group">
+                        <button onclick="playSfx('click')" class="px-3 py-1.5 rounded bg-slate-900 border border-slate-700 hover:border-red-500 text-white flex items-center gap-1.5">
+                            <i class="fa-solid fa-robot theme-accent-text"></i>
+                            <span class="hidden md:inline">SUIT PALETTE</span>
+                            <i class="fa-solid fa-chevron-down text-[10px] text-slate-400"></i>
+                        </button>
+                        <div class="absolute right-0 mt-2 w-52 bg-slate-900 border border-slate-700 rounded-lg shadow-2xl p-2 hidden group-hover:block z-50 space-y-1">
+                            <div class="text-[10px] font-bold text-slate-500 px-2 py-1 uppercase">Select Mobile Suit</div>
+                            <button onclick="setTheme('zaku')" class="w-full text-left px-2.5 py-1.5 rounded hover:bg-slate-800 flex items-center justify-between text-slate-200">
+                                <span>MS-06S Char Zaku</span>
+                                <span class="w-3 h-3 rounded-full bg-red-600 inline-block"></span>
+                            </button>
+                            <button onclick="setTheme('rx78')" class="w-full text-left px-2.5 py-1.5 rounded hover:bg-slate-800 flex items-center justify-between text-slate-200">
+                                <span>RX-78-2 Gundam</span>
+                                <span class="w-3 h-3 rounded-full bg-blue-600 inline-block"></span>
+                            </button>
+                            <button onclick="setTheme('barbatos')" class="w-full text-left px-2.5 py-1.5 rounded hover:bg-slate-800 flex items-center justify-between text-slate-200">
+                                <span>ASW-G-08 Barbatos</span>
+                                <span class="w-3 h-3 rounded-full bg-amber-600 inline-block"></span>
+                            </button>
+                            <button onclick="setTheme('unicorn')" class="w-full text-left px-2.5 py-1.5 rounded hover:bg-slate-800 flex items-center justify-between text-slate-200">
+                                <span>RX-0 Unicorn (NT-D)</span>
+                                <span class="w-3 h-3 rounded-full bg-pink-500 inline-block"></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button onclick="toggleMobileMenu(); playSfx('click')" class="lg:hidden p-2 rounded bg-slate-900 border border-slate-700 text-slate-200">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden lg:hidden bg-slate-950 border-b border-slate-800 px-4 pt-3 pb-6 space-y-2 font-mono text-xs">
+            <a href="#hero" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded bg-slate-900 text-slate-200">01. COMMAND</a>
+            <a href="#specs" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded bg-slate-900 text-slate-200">02. PILOT SPECS</a>
+            <a href="#hangar" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded bg-slate-900 text-slate-200">03. HANGAR UNITS</a>
+            <a href="#creative" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded bg-slate-900 text-slate-200">04. CAD & MEDIA</a>
+            <a href="#ideas" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded bg-slate-900 text-slate-200">05. LOGS</a>
+            <a href="#contact" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded bg-slate-900 text-slate-200">06. COMMS & SOCIALS</a>
+        </div>
+    </header>
+
+    <!-- Hero Command Center -->
+    <section id="hero" class="relative pt-28 pb-20 lg:pt-36 lg:pb-32 overflow-hidden border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 bg-red-950/80 border border-red-800 text-red-400 font-mono text-xs">
+                        <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+                        <span>TACTICAL COMMAND ONLINE • ICCT ENGINEERING SOCIETY</span>
+                    </div>
+
+                    <h1 class="text-4xl sm:text-6xl font-black tracking-tight uppercase font-mono leading-none">
+                        ABIJAH ISRAEL L. <br/>
+                        <span class="theme-accent-text">ANGELES</span> <span class="text-amber-400 text-2xl sm:text-4xl">(JAH)</span>
+                    </h1>
+
+                    <p class="text-slate-400 text-base sm:text-lg max-w-xl font-sans leading-relaxed">
+                        4th Year <strong class="text-white">BS Computer Engineering (BsCpE)</strong> student and <strong class="text-white">President of ICCT Engineering Society (IES)</strong>. Crafting digital products, UI/UX, AI, and hardware logic.
+                    </p>
+
+                    <!-- Quick Social Link Bar in Hero -->
+                    <div class="flex flex-wrap items-center gap-3 pt-1 font-mono text-xs">
+                        <a href="https://facebook.com/abijah.israel.angeles" target="_blank" onclick="playSfx('click')" class="px-3 py-1.5 bg-slate-900 border border-slate-800 hover:border-blue-500 text-slate-300 hover:text-white flex items-center gap-2 transition-all">
+                            <i class="fa-brands fa-facebook text-blue-500"></i>
+                            <span>Facebook</span>
+                        </a>
+                        <a href="https://instagram.com/Bijahhh_" target="_blank" onclick="playSfx('click')" class="px-3 py-1.5 bg-slate-900 border border-slate-800 hover:border-pink-500 text-slate-300 hover:text-white flex items-center gap-2 transition-all">
+                            <i class="fa-brands fa-instagram text-pink-500"></i>
+                            <span>@Bijahhh_</span>
+                        </a>
+                        <a href="https://github.com/abijahisrael" target="_blank" onclick="playSfx('click')" class="px-3 py-1.5 bg-slate-900 border border-slate-800 hover:border-purple-500 text-slate-300 hover:text-white flex items-center gap-2 transition-all">
+                            <i class="fa-brands fa-github text-purple-400"></i>
+                            <span>jjangmyeon</span>
+                        </a>
+                        <a href="https://linkedin.com/in/abijah-israel-angeles" target="_blank" onclick="playSfx('click')" class="px-3 py-1.5 bg-slate-900 border border-slate-800 hover:border-sky-500 text-slate-300 hover:text-white flex items-center gap-2 transition-all">
+                            <i class="fa-brands fa-linkedin text-sky-400"></i>
+                            <span>LinkedIn</span>
+                        </a>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-3 font-mono text-xs pt-2">
+                        <div class="p-3 bg-slate-900/90 border border-slate-800 hud-card">
+                            <span class="text-slate-500 block text-[10px]">COMMAND ROLE</span>
+                            <span class="text-red-400 font-bold text-xs sm:text-sm">IES PRESIDENT</span>
+                        </div>
+                        <div class="p-3 bg-slate-900/90 border border-slate-800 hud-card">
+                            <span class="text-slate-500 block text-[10px]">PILOT CLASS</span>
+                            <span class="text-amber-400 font-bold text-xs sm:text-sm">4TH YEAR CpE</span>
+                        </div>
+                        <div class="p-3 bg-slate-900/90 border border-slate-800 hud-card">
+                            <span class="text-slate-500 block text-[10px]">SUIT MODEL</span>
+                            <span class="theme-accent-text font-bold text-xs sm:text-sm">CHAR'S ZAKU II</span>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-4 pt-2 font-mono text-xs">
+                        <a href="#contact" onclick="playSfx('saber')" class="px-6 py-3.5 theme-accent-bg hover:opacity-90 text-white font-bold tracking-wider uppercase transition-all shadow-lg flex items-center gap-2">
+                            <i class="fa-solid fa-headset"></i>
+                            <span>CONTACT ME / TRANSMIT</span>
+                        </a>
+                        <button onclick="triggerLanyardDrop(); playSfx('servo')" class="px-6 py-3.5 bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 font-bold tracking-wider uppercase transition-all flex items-center gap-2">
+                            <i class="fa-solid fa-id-badge theme-accent-text"></i>
+                            <span>RE-DROP LANYARD</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 3D ID Lanyard -->
+                <div class="lg:col-span-5 flex justify-center">
+                    <div id="lanyard-container" class="lanyard-drop relative w-full max-w-sm flex flex-col items-center">
+                        
+                        <div class="w-12 h-16 bg-gradient-to-b from-red-800 via-red-600 to-red-900 border-x-2 border-slate-900 shadow-xl flex items-center justify-center relative -mb-3 z-10">
+                            <div class="text-[9px] font-mono text-amber-300 font-bold rotate-90 tracking-widest whitespace-nowrap">
+                                IES • CpE 2026
+                            </div>
+                        </div>
+
+                        <div class="w-8 h-8 rounded-full border-4 border-slate-400 bg-slate-800 shadow-md flex items-center justify-center -mb-2 z-20">
+                            <div class="w-3 h-3 bg-slate-600 rounded-full border border-slate-300"></div>
+                        </div>
+
+                        <div class="w-full id-card-perspective h-[440px]">
+                            <div id="id-card" onclick="flipIdCard()" class="id-card-inner shadow-2xl">
+                                
+                                <div class="id-card-front bg-slate-900 border-2 border-red-600 p-5 flex flex-col justify-between hud-card shadow-2xl">
+                                    <div class="flex justify-between items-center border-b border-red-900/60 pb-3">
+                                        <div class="flex items-center gap-2">
+                                            <div class="w-6 h-6 rounded bg-red-600 flex items-center justify-center text-white font-mono font-bold text-xs">
+                                                IES
+                                            </div>
+                                            <div>
+                                                <div class="font-mono text-[9px] text-red-400 font-bold">ICCT ENGINEERING SOCIETY</div>
+                                                <div class="font-mono text-[8px] text-slate-400">OFFICIAL PILOT BADGE</div>
+                                            </div>
+                                        </div>
+                                        <span class="px-1.5 py-0.5 bg-amber-500/20 text-amber-400 border border-amber-500 font-mono text-[9px] font-bold">ACTIVE</span>
+                                    </div>
+
+                                    <div class="my-3 relative group overflow-hidden border-2 border-slate-700 bg-slate-950 rounded-md">
+                                        <img src="image_ba4e7b.jpg" alt="Abijah Israel L. Angeles" class="w-full h-52 object-cover object-top group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/400x500/1e293b/ffffff?text=Abijah+Israel+L.+Angeles'"/>
+                                        <div class="absolute bottom-2 left-2 right-2 bg-slate-950/80 backdrop-blur-md px-2 py-1 border border-slate-800 flex justify-between items-center font-mono text-[10px]">
+                                            <span class="text-white font-bold">JAH ANGELES</span>
+                                            <span class="text-red-400">BS CpE - 4TH YR</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="font-mono text-xs space-y-1 bg-slate-950 p-2.5 border border-slate-800 rounded">
+                                        <div class="flex justify-between text-[10px]">
+                                            <span class="text-slate-400">POSITION:</span>
+                                            <span class="text-amber-400 font-bold">IES PRESIDENT</span>
+                                        </div>
+                                        <div class="flex justify-between text-[10px]">
+                                            <span class="text-slate-400">EMAIL:</span>
+                                            <span class="text-white font-bold truncate">abijahisraelangeles04@gmail.com</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="pt-2 flex items-center justify-between font-mono text-[9px] text-slate-400">
+                                        <div class="tracking-widest font-mono text-xs text-slate-300">||||| | |||| ||| ||||</div>
+                                        <span class="text-red-400 font-bold animate-pulse flex items-center gap-1">
+                                            <span>FLIP FOR ZAKU II</span>
+                                            <i class="fa-solid fa-rotate"></i>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="id-card-back bg-slate-950 border-2 border-red-600 p-5 flex flex-col justify-between hud-card shadow-2xl">
+                                    <div class="flex justify-between items-center border-b border-red-900/60 pb-2">
+                                        <span class="font-mono text-[10px] text-red-500 font-bold tracking-widest">MOBILE SUIT SPECIFICATION</span>
+                                        <span class="px-2 py-0.5 bg-red-950 text-red-400 border border-red-800 font-mono text-[9px]">MS-06S</span>
+                                    </div>
+
+                                    <div class="my-3 relative overflow-hidden border-2 border-red-900/80 rounded-md bg-black">
+                                        <img src="image_ba4e60.jpg" alt="Char Zaku II" class="w-full h-64 object-cover" onerror="this.src='https://placehold.co/400x500/9f1239/ffffff?text=Char+MS-06S+Zaku+II'"/>
+                                        <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent p-3 font-mono">
+                                            <div class="text-red-400 font-bold text-xs">CHAR'S ZAKU II (RED COMET)</div>
+                                            <div class="text-[9px] text-slate-300">PRINCIPALITY OF ZEON COMMAND UNIT</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="font-mono text-[10px] text-slate-400 text-center bg-slate-900 p-2 border border-slate-800 rounded">
+                                        <span class="text-amber-400">"3X FASTER COMPONENT DEPLOYMENT"</span>
+                                    </div>
+
+                                    <div class="flex justify-between items-center font-mono text-[9px] text-slate-500 pt-1">
+                                        <span>STATUS: READY FOR SORTIE</span>
+                                        <span class="text-red-400 font-bold flex items-center gap-1">
+                                            <span>FLIP FRONT</span>
+                                            <i class="fa-solid fa-rotate"></i>
+                                        </span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Pilot Specs -->
+    <section id="specs" class="py-20 bg-slate-950/60 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="font-mono text-xs font-bold uppercase tracking-widest theme-accent-text block mb-1">DATA DOSSIER</span>
+                <h2 class="text-3xl sm:text-4xl font-black text-white font-mono uppercase">PILOT SPECIFICATIONS & CAPABILITIES</h2>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <div class="lg:col-span-6 space-y-6">
+                    <div class="p-6 hud-card space-y-4">
+                        <h3 class="text-xl font-bold text-white font-mono flex items-center gap-2">
+                            <i class="fa-solid fa-user-gear theme-accent-text"></i> COMMANDER BIOGRAPHY
+                        </h3>
+                        <p class="text-slate-300 text-sm leading-relaxed font-sans">
+                            As a 4th-year BS Computer Engineering student and President of the ICCT Engineering Society (IES), I enjoy transforming ideas into functional and visually engaging digital products while continuously exploring new technologies and better ways to solve real-world problems.
+                        </p>
+                        
+                        <div class="space-y-4 pt-2 font-mono text-xs">
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-slate-300">FRONT-END & UI/UX DESIGN</span>
+                                    <span class="theme-accent-text font-bold">96%</span>
+                                </div>
+                                <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                                    <div class="theme-accent-bg h-2" style="width: 96%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-slate-300">ARTIFICIAL INTELLIGENCE & MACHINE LEARNING</span>
+                                    <span class="text-amber-400 font-bold">88%</span>
+                                </div>
+                                <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-amber-500 h-2" style="width: 88%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-slate-300">IOT & EMBEDDED SYSTEMS</span>
+                                    <span class="text-emerald-400 font-bold">90%</span>
+                                </div>
+                                <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-emerald-500 h-2" style="width: 90%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-slate-300">AUTOCAD & SYSTEM FLOWCHARTS</span>
+                                    <span class="text-cyan-400 font-bold">92%</span>
+                                </div>
+                                <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-cyan-500 h-2" style="width: 92%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-6">
+                    <div class="p-6 hud-card">
+                        <h3 class="text-xl font-bold text-white font-mono mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-microchip text-amber-400"></i> TECHNICAL ARMAMENT MATRIX
+                        </h3>
+                        
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 font-mono text-xs">
+                            <div onmouseenter="playSfx('lock')" class="p-3 bg-slate-950 border border-slate-800 hover:border-red-500 transition-colors flex items-center gap-2.5">
+                                <i class="fa-brands fa-html5 text-orange-500 text-lg"></i>
+                                <span>HTML / CSS / JS</span>
+                            </div>
+                            <div onmouseenter="playSfx('lock')" class="p-3 bg-slate-950 border border-slate-800 hover:border-red-500 transition-colors flex items-center gap-2.5">
+                                <i class="fa-brands fa-python text-amber-400 text-lg"></i>
+                                <span>Python</span>
+                            </div>
+                            <div onmouseenter="playSfx('lock')" class="p-3 bg-slate-950 border border-slate-800 hover:border-red-500 transition-colors flex items-center gap-2.5">
+                                <i class="fa-brands fa-react text-cyan-400 text-lg"></i>
+                                <span>React & UI</span>
+                            </div>
+                            <div onmouseenter="playSfx('lock')" class="p-3 bg-slate-950 border border-slate-800 hover:border-red-500 transition-colors flex items-center gap-2.5">
+                                <i class="fa-solid fa-brain text-pink-400 text-lg"></i>
+                                <span>AI & ML</span>
+                            </div>
+                            <div onmouseenter="playSfx('lock')" class="p-3 bg-slate-950 border border-slate-800 hover:border-red-500 transition-colors flex items-center gap-2.5">
+                                <i class="fa-solid fa-hard-drive text-emerald-400 text-lg"></i>
+                                <span>IoT / Hardware</span>
+                            </div>
+                            <div onmouseenter="playSfx('lock')" class="p-3 bg-slate-950 border border-slate-800 hover:border-red-500 transition-colors flex items-center gap-2.5">
+                                <i class="fa-solid fa-drafting-compass text-blue-400 text-lg"></i>
+                                <span>AutoCAD</span>
+                            </div>
+                            <div onmouseenter="playSfx('lock')" class="p-3 bg-slate-950 border border-slate-800 hover:border-red-500 transition-colors flex items-center gap-2.5">
+                                <i class="fa-solid fa-image text-purple-400 text-lg"></i>
+                                <span>Photoshop</span>
+                            </div>
+                            <div onmouseenter="playSfx('lock')" class="p-3 bg-slate-950 border border-slate-800 hover:border-red-500 transition-colors flex items-center gap-2.5">
+                                <i class="fa-solid fa-film text-red-400 text-lg"></i>
+                                <span>Filmora Video</span>
+                            </div>
+                            <div onmouseenter="playSfx('lock')" class="p-3 bg-slate-950 border border-slate-800 hover:border-red-500 transition-colors flex items-center gap-2.5">
+                                <i class="fa-solid fa-diagram-project text-yellow-400 text-lg"></i>
+                                <span>Flowcharts</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Hangar -->
+    <section id="hangar" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+                <div>
+                    <span class="font-mono text-xs font-bold uppercase tracking-widest theme-accent-text block mb-1">MODEL KIT RUNNER SPRUE A-1</span>
+                    <h2 class="text-3xl sm:text-4xl font-black text-white font-mono uppercase">PROJECT UNITS & MOBILE SUITS</h2>
+                </div>
+
+                <div class="flex flex-wrap gap-2 font-mono text-xs">
+                    <button onclick="filterProjects('all'); playSfx('servo')" class="proj-btn active px-3.5 py-1.5 theme-accent-bg text-white font-bold border border-red-500">ALL UNITS</button>
+                    <button onclick="filterProjects('webapp'); playSfx('servo')" class="proj-btn px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700">WEB APPS</button>
+                    <button onclick="filterProjects('game'); playSfx('servo')" class="proj-btn px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700">GAMES</button>
+                    <button onclick="filterProjects('ai'); playSfx('servo')" class="proj-btn px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700">AI / BANKING</button>
+                </div>
+            </div>
+
+            <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- JS Populated -->
+            </div>
+        </div>
+    </section>
+
+    <!-- CAD & Media Engineering -->
+    <section id="creative" class="py-20 bg-slate-950/60 border-t border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="font-mono text-xs font-bold uppercase tracking-widest theme-accent-text block mb-1">SCHEMATICS & PRODUCTION</span>
+                <h2 class="text-3xl sm:text-4xl font-black text-white font-mono uppercase">AUTOCAD, FLOWCHARTS & MEDIA SUITE</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="p-6 hud-card space-y-3 font-mono">
+                    <div class="w-12 h-12 bg-blue-950 border border-blue-500 flex items-center justify-center text-blue-400 text-xl">
+                        <i class="fa-solid fa-drafting-compass"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white">AutoCAD Schematics</h3>
+                    <p class="text-slate-400 text-xs font-sans leading-relaxed">
+                        Precision computer-aided drafting for engineering layouts, electrical wiring, and physical component blueprints.
+                    </p>
+                    <div class="pt-2 text-xs text-blue-400 font-bold">2D & 3D DRAFTING READY</div>
+                </div>
+
+                <div class="p-6 hud-card space-y-3 font-mono">
+                    <div class="w-12 h-12 bg-red-950 border border-red-500 flex items-center justify-center text-red-400 text-xl">
+                        <i class="fa-solid fa-film"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white">Filmora Commercials</h3>
+                    <p class="text-slate-400 text-xs font-sans leading-relaxed">
+                        Dynamic video editing, motion promos, and commercial productions crafted with temporal transitions and sound design.
+                    </p>
+                    <div class="pt-2 text-xs text-red-400 font-bold">TIMELINE & COMMERCIAL EDITING</div>
+                </div>
+
+                <div class="p-6 hud-card space-y-3 font-mono">
+                    <div class="w-12 h-12 bg-amber-950 border border-amber-500 flex items-center justify-center text-amber-400 text-xl">
+                        <i class="fa-solid fa-diagram-project"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white">Photoshop & System Logic</h3>
+                    <p class="text-slate-400 text-xs font-sans leading-relaxed">
+                        Structured software flowcharts and algorithm mapping paired with Adobe Photoshop and Lightroom photo enhancements.
+                    </p>
+                    <div class="pt-2 text-xs text-amber-400 font-bold">LOGIC & VISUAL ARTWORK</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ideas Section -->
+    <section id="ideas" class="py-20 relative border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="font-mono text-xs font-bold uppercase tracking-widest theme-accent-text block mb-1">DATA DISPATCHES</span>
+                <h2 class="text-3xl sm:text-4xl font-black text-white font-mono uppercase">ENGINEERING IDEAS & THOUGHT LOGS</h2>
+            </div>
+
+            <div id="ideas-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- JS Populated -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Me & Social Channels Section -->
+    <section id="contact" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="font-mono text-xs font-bold uppercase tracking-widest theme-accent-text block mb-1">ENCRYPTED FREQUENCY</span>
+                <h2 class="text-3xl sm:text-4xl font-black text-white font-mono uppercase">CONTACT ME & SOCIAL CHANNELS</h2>
+                <p class="text-slate-400 text-sm mt-2 font-sans">
+                    Reach out for engineering collaborations, event leadership, or web & software projects.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                
+                <!-- Social Channels Grid Left -->
+                <div class="lg:col-span-5 space-y-4 font-mono text-xs">
+                    
+                    <!-- Email Card -->
+                    <div class="p-4 bg-slate-900 border border-slate-800 hover:border-red-500 transition-colors hud-card flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded bg-red-950 border border-red-700 flex items-center justify-center text-red-400 text-base">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <div>
+                                <span class="text-slate-500 block text-[10px]">DIRECT EMAIL</span>
+                                <span class="text-white font-bold text-xs">abijahisraelangeles04@gmail.com</span>
+                            </div>
+                        </div>
+                        <button onclick="copyToClipboard('abijahisraelangeles04@gmail.com'); playSfx('click')" title="Copy Email" class="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+                    </div>
+
+                    <!-- Facebook -->
+                    <a href="https://facebook.com/abijah.israel.angeles" target="_blank" onclick="playSfx('click')" class="p-4 bg-slate-900 border border-slate-800 hover:border-blue-500 transition-colors hud-card flex items-center justify-between group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded bg-blue-950 border border-blue-700 flex items-center justify-center text-blue-400 text-base">
+                                <i class="fa-brands fa-facebook-f"></i>
+                            </div>
+                            <div>
+                                <span class="text-slate-500 block text-[10px]">FACEBOOK</span>
+                                <span class="text-white font-bold text-xs group-hover:text-blue-400">Abijah Israel Angeles</span>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-slate-500 group-hover:text-blue-400"></i>
+                    </a>
+
+                    <!-- Instagram -->
+                    <a href="https://instagram.com/Bijahhh_" target="_blank" onclick="playSfx('click')" class="p-4 bg-slate-900 border border-slate-800 hover:border-pink-500 transition-colors hud-card flex items-center justify-between group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded bg-pink-950 border border-pink-700 flex items-center justify-center text-pink-400 text-base">
+                                <i class="fa-brands fa-instagram"></i>
+                            </div>
+                            <div>
+                                <span class="text-slate-500 block text-[10px]">INSTAGRAM</span>
+                                <span class="text-white font-bold text-xs group-hover:text-pink-400">@Bijahhh_</span>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-slate-500 group-hover:text-pink-400"></i>
+                    </a>
+
+                    <!-- GitHub -->
+                    <a href="https://github.com/abijahisrael" target="_blank" onclick="playSfx('click')" class="p-4 bg-slate-900 border border-slate-800 hover:border-purple-500 transition-colors hud-card flex items-center justify-between group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded bg-purple-950 border border-purple-700 flex items-center justify-center text-purple-400 text-base">
+                                <i class="fa-brands fa-github"></i>
+                            </div>
+                            <div>
+                                <span class="text-slate-500 block text-[10px]">GITHUB</span>
+                                <span class="text-white font-bold text-xs group-hover:text-purple-400">abijahisrael (jjangmyeon)</span>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-slate-500 group-hover:text-purple-400"></i>
+                    </a>
+
+                    <!-- LinkedIn -->
+                    <a href="https://linkedin.com/in/abijah-israel-angeles" target="_blank" onclick="playSfx('click')" class="p-4 bg-slate-900 border border-slate-800 hover:border-sky-500 transition-colors hud-card flex items-center justify-between group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded bg-sky-950 border border-sky-700 flex items-center justify-center text-sky-400 text-base">
+                                <i class="fa-brands fa-linkedin-in"></i>
+                            </div>
+                            <div>
+                                <span class="text-slate-500 block text-[10px]">LINKEDIN</span>
+                                <span class="text-white font-bold text-xs group-hover:text-sky-400">Abijah Israel Angeles</span>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-slate-500 group-hover:text-sky-400"></i>
+                    </a>
+
+                </div>
+
+                <!-- Interactive Contact Form Right -->
+                <div class="lg:col-span-7">
+                    <form onsubmit="handleContactSubmit(event)" class="p-6 sm:p-8 hud-card space-y-5 font-mono text-xs">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                            <span class="text-red-400 font-bold uppercase">DISPATCH MESSAGING SUB-SYSTEM</span>
+                            <span class="text-slate-500 text-[10px]">STATUS: TRANSMITTER READY</span>
+                        </div>
+
+                        <div>
+                            <label class="block text-slate-400 mb-1">CALLSIGN / SENDER NAME</label>
+                            <input type="text" id="sender-name" required oninput="playSfx('click')" placeholder="e.g. Commander / Recruiter" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 text-slate-200 focus:outline-none focus:border-red-500"/>
+                        </div>
+                        <div>
+                            <label class="block text-slate-400 mb-1">FREQUENCY / EMAIL ADDRESS</label>
+                            <input type="email" id="sender-email" required oninput="playSfx('click')" placeholder="yourname@domain.com" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 text-slate-200 focus:outline-none focus:border-red-500"/>
+                        </div>
+                        <div>
+                            <label class="block text-slate-400 mb-1">MISSION DISPATCH MESSAGE</label>
+                            <textarea id="sender-msg" rows="4" required oninput="playSfx('click')" placeholder="State project or inquiry details..." class="w-full px-4 py-3 bg-slate-950 border border-slate-800 text-slate-200 focus:outline-none focus:border-red-500"></textarea>
+                        </div>
+
+                        <div id="form-feedback" class="hidden p-3 bg-emerald-950 border border-emerald-800 text-emerald-400 text-xs"></div>
+
+                        <button type="submit" onclick="playSfx('saber')" class="w-full py-4 theme-accent-bg hover:opacity-90 text-white font-bold tracking-widest uppercase transition-all shadow-lg flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            <span>TRANSMIT DIRECT DISPATCH</span>
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 bg-slate-950 border-t border-slate-900 font-mono text-xs text-center text-slate-500">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>© 2026 Abijah Israel L. Angeles (Jah) • ICCT Engineering Society (IES) President</p>
+            <p class="text-[10px] text-slate-600 mt-1">Gundam Mecha Command System • Mobile Suit Palette Architecture</p>
+        </div>
+    </footer>
+
+    <!-- Project Detail Modal -->
+    <div id="project-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
+        <div class="bg-slate-900 border-2 border-slate-700 w-full max-w-2xl p-6 sm:p-8 relative hud-card max-h-[90vh] overflow-y-auto">
+            <button onclick="closeModal('project-modal'); playSfx('click')" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div id="project-modal-content"></div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast-notif" class="fixed bottom-5 right-5 z-50 hidden px-4 py-3 bg-emerald-950 border border-emerald-500 text-emerald-300 font-mono text-xs shadow-2xl rounded">
+        <i class="fa-solid fa-check-circle mr-2"></i>
+        <span id="toast-text">Text copied!</span>
+    </div>
+
+    <script>
+        // Web Audio Synthesizer Engine
+        let audioCtx = null;
+        let sfxEnabled = true;
+
+        function initAudio() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+            }
+        }
+
+        function toggleSfx() {
+            sfxEnabled = !sfxEnabled;
+            const icon = document.getElementById('sfx-icon');
+            const label = document.getElementById('sfx-label');
+
+            if (sfxEnabled) {
+                icon.className = 'fa-solid fa-volume-high text-emerald-400';
+                label.innerText = 'SFX: ON';
+                playSfx('lock');
+            } else {
+                icon.className = 'fa-solid fa-volume-xmark text-slate-500';
+                label.innerText = 'SFX: OFF';
+            }
+        }
+
+        function playSfx(type) {
+            if (!sfxEnabled) return;
+            initAudio();
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'lock') {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, now);
+                osc.frequency.setValueAtTime(1760, now + 0.05);
+                gain.gain.setValueAtTime(0.08, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.12);
+            } 
+            else if (type === 'servo') {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(180, now);
+                osc.frequency.exponentialRampToValueAtTime(520, now + 0.15);
+                gain.gain.setValueAtTime(0.06, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.15);
+            } 
+            else if (type === 'saber') {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(150, now);
+                osc.frequency.exponentialRampToValueAtTime(1400, now + 0.08);
+                osc.frequency.exponentialRampToValueAtTime(350, now + 0.25);
+                gain.gain.setValueAtTime(0.12, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.25);
+            }
+            else if (type === 'click') {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(650, now);
+                gain.gain.setValueAtTime(0.03, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.04);
+            }
+        }
+
+        function flipIdCard() {
+            const card = document.getElementById('id-card');
+            card.classList.toggle('is-flipped');
+            playSfx('servo');
+        }
+
+        function triggerLanyardDrop() {
+            const container = document.getElementById('lanyard-container');
+            container.classList.remove('lanyard-drop');
+            void container.offsetWidth;
+            container.classList.add('lanyard-drop');
+        }
+
+        function copyToClipboard(text) {
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text);
+            } else {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+            }
+            showToast('Email address copied to clipboard!');
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast-notif');
+            document.getElementById('toast-text').innerText = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 3000);
+        }
+
+        const projectsData = [
+            {
+                id: 'p-eventease',
+                partNo: 'PART A-01',
+                title: 'EventEase Platform',
+                category: 'webapp',
+                type: 'Event Management Platform',
+                description: 'Comprehensive web solution for planning, scheduling, and managing university & corporate events.',
+                missionBrief: 'Designed and deployed as a real-time event booking and management hub. Features seamless scheduling, attendee registration tracking, and intuitive user workflows.',
+                techStack: ['React', 'Firebase', 'Tailwind CSS', 'JavaScript'],
+                liveUrl: 'https://eventeasep.web.app/',
+                image: 'https://placehold.co/600x400/1e293b/ef4444?text=PART+A-01:+EVENTEASE+PLATFORM'
+            },
+            {
+                id: 'p-byte',
+                partNo: 'PART A-02',
+                title: 'B.Y.T.E Educational Game',
+                category: 'game',
+                type: 'Gamified Python Learning Platform',
+                description: 'Interactive educational game designed to teach Python programming logic through gamified mecha quests.',
+                missionBrief: 'Built to lower the barrier for aspiring developers. Features level progression, syntax challenges, interactive terminal feedback, and flowchart logic.',
+                techStack: ['Python', 'JavaScript', 'HTML5 Canvas', 'Game Design'],
+                liveUrl: '#',
+                image: 'https://placehold.co/600x400/1e293b/fbbf24?text=PART+A-02:+B.Y.T.E.+GAME'
+            },
+            {
+                id: 'p-aia',
+                partNo: 'PART B-01',
+                title: 'A.I.A Banking System',
+                category: 'ai',
+                type: 'Intelligent Financial Banking Platform',
+                description: 'AI-assisted banking interface with fraud detection algorithms and secure transaction workflows.',
+                missionBrief: 'Constructed to simulate modern enterprise banking operations. Features account management, real-time transaction ledgers, and intelligent security checks.',
+                techStack: ['Python', 'AI/ML Logic', 'Full-Stack Web', 'SQL Database'],
+                liveUrl: '#',
+                image: 'https://placehold.co/600x400/1e293b/38bdf8?text=PART+B-01:+A.I.A.+BANKING'
+            }
+        ];
+
+        const ideasData = [
+            {
+                code: 'LOG-01',
+                title: 'Structuring Flowcharts for Hardware & Microcontrollers',
+                text: 'How mapping flowchart logic before writing C++/Python code reduces microcontroller logic bugs in Embedded Systems & IoT.'
+            },
+            {
+                code: 'LOG-02',
+                title: 'Integrating Machine Learning Models into Web UIs',
+                text: 'Best practices for bringing Python-trained Machine Learning models to front-end client applications without sacrificing latency.'
+            }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProjects(projectsData);
+            renderIdeas(ideasData);
+        });
+
+        function renderProjects(units) {
+            const container = document.getElementById('projects-grid');
+            container.innerHTML = '';
+
+            units.forEach(unit => {
+                const card = document.createElement('div');
+                card.className = 'gunpla-runner p-5 rounded-lg hover:border-red-500 transition-all group flex flex-col justify-between';
+                card.onmouseenter = () => playSfx('lock');
+
+                const tags = unit.techStack.map(t => `<span class="px-2 py-0.5 bg-slate-900 border border-slate-700 text-slate-300 text-[10px]">${t}</span>`).join(' ');
+
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-center mb-3 font-mono text-xs">
+                            <span class="px-2.5 py-0.5 bg-red-950 text-red-400 border border-red-800 font-bold">${unit.partNo}</span>
+                            <span class="text-slate-400 text-[10px]">${unit.type}</span>
+                        </div>
+
+                        <div class="relative overflow-hidden aspect-video mb-4 border border-slate-800 rounded">
+                            <img src="${unit.image}" alt="${unit.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+                        </div>
+
+                        <h3 class="text-lg font-bold font-mono text-white group-hover:text-red-400 transition-colors">${unit.title}</h3>
+                        <p class="text-slate-400 text-xs mt-2 font-sans line-clamp-2">${unit.description}</p>
+                        
+                        <div class="flex flex-wrap gap-1 mt-4 font-mono">
+                            ${tags}
+                        </div>
+                    </div>
+
+                    <div class="pt-4 mt-4 border-t border-slate-800 flex items-center justify-between font-mono text-xs">
+                        <button onclick="openProjectModal('${unit.id}'); playSfx('saber')" class="text-red-400 hover:underline flex items-center gap-1 font-bold">
+                            <span>INSPECT UNIT</span>
+                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </button>
+                        ${unit.liveUrl !== '#' ? `<a href="${unit.liveUrl}" target="_blank" class="px-2.5 py-1 bg-blue-600 hover:bg-blue-500 text-white font-bold text-[10px]">LAUNCH LIVE</a>` : ''}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterProjects(cat) {
+            const btns = document.querySelectorAll('.proj-btn');
+            btns.forEach(b => {
+                b.classList.remove('theme-accent-bg', 'text-white', 'font-bold');
+                b.classList.add('bg-slate-900', 'text-slate-300');
+            });
+            event.target.classList.remove('bg-slate-900', 'text-slate-300');
+            event.target.classList.add('theme-accent-bg', 'text-white', 'font-bold');
+
+            if (cat === 'all') {
+                renderProjects(projectsData);
+            } else {
+                renderProjects(projectsData.filter(u => u.category === cat));
+            }
+        }
+
+        function openProjectModal(id) {
+            const unit = projectsData.find(u => u.id === id);
+            if (!unit) return;
+
+            const content = document.getElementById('project-modal-content');
+            content.innerHTML = `
+                <div class="font-mono text-xs space-y-4">
+                    <div class="flex items-center gap-2">
+                        <span class="px-2 py-0.5 bg-red-600 text-white font-bold">${unit.partNo}</span>
+                        <span class="text-slate-400">${unit.type}</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white uppercase">${unit.title}</h3>
+                    <img src="${unit.image}" alt="${unit.title}" class="w-full h-56 object-cover border border-slate-800 my-4 rounded"/>
+                    
+                    <div>
+                        <span class="text-slate-500 block text-[10px] uppercase">MISSION BRIEF & ARCHITECTURE</span>
+                        <p class="text-slate-300 font-sans text-sm mt-1 leading-relaxed">${unit.missionBrief}</p>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-800 flex gap-4">
+                        ${unit.liveUrl !== '#' ? `
+                            <a href="${unit.liveUrl}" target="_blank" class="flex-1 text-center py-3 bg-red-600 hover:bg-red-500 text-white font-bold tracking-widest uppercase rounded">
+                                OPEN LIVE PLATFORM
+                            </a>
+                        ` : `
+                            <div class="flex-1 text-center py-3 bg-slate-800 text-amber-400 font-bold uppercase rounded">
+                                DEVELOPMENT DEPLOYMENT IN PROGRESS
+                            </div>
+                        `}
+                    </div>
+                </div>
+            `;
+            document.getElementById('project-modal').classList.remove('hidden');
+        }
+
+        function renderIdeas(logs) {
+            const container = document.getElementById('ideas-grid');
+            container.innerHTML = '';
+
+            logs.forEach(log => {
+                const card = document.createElement('div');
+                card.className = 'p-6 hud-card font-mono space-y-3';
+                card.onmouseenter = () => playSfx('lock');
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-center text-xs text-slate-500">
+                        <span class="text-amber-400 font-bold">${log.code}</span>
+                        <span>DISPATCH LOG</span>
+                    </div>
+                    <h3 class="text-base font-bold text-white">${log.title}</h3>
+                    <p class="text-slate-400 text-xs font-sans leading-relaxed">${log.text}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        function setTheme(theme) {
+            document.body.setAttribute('data-theme', theme);
+            playSfx('servo');
+        }
+
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            const icon = document.getElementById('mode-icon');
+            if (document.documentElement.classList.contains('dark')) {
+                icon.className = 'fa-solid fa-moon';
+            } else {
+                icon.className = 'fa-solid fa-sun';
+            }
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('sender-name').value;
+            const email = document.getElementById('sender-email').value;
+            const msg = document.getElementById('sender-msg').value;
+
+            const feedback = document.getElementById('form-feedback');
+            feedback.innerText = `DISPATCH SENT! Opening email client for ${name}...`;
+            feedback.classList.remove('hidden');
+
+            const mailtoUrl = `mailto:abijahisraelangeles04@gmail.com?subject=Portfolio Inquiry from ${encodeURIComponent(name)}&body=${encodeURIComponent(msg + '\n\nSender Email: ' + email)}`;
+            
+            setTimeout(() => {
+                window.location.href = mailtoUrl;
+                e.target.reset();
+            }, 800);
+
+            setTimeout(() => feedback.classList.add('hidden'), 4000);
+        }
+    </script>
+</body>
+</html>
